@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
-from learning_logs.models import Topic
+from learning_logs.forms import TopicForm, EntryForm
+from learning_logs.models import Topic, Entry
 
 
 # Create your views here.
@@ -17,7 +18,7 @@ def getTopics(request):
 
 
 def getTopic(request, topic_id):
-    """Show a single topic and all its entries."""
+    """Despliega la información de un topic."""
     topic = Topic.objects.get(id=topic_id)
     entries = topic.entry_set.order_by('-date_added')
     context = {
@@ -26,3 +27,67 @@ def getTopic(request, topic_id):
     }
     return render(request, 'learning_logs/topic.html', context)
 
+
+def newTopic(request):
+    """Agregar un nuevo topic."""
+
+    if request.method != 'POST':
+        # No data submitted; create a blank form.
+        form = TopicForm()
+    else:
+        # POST data submitted; process data.
+        form = TopicForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('learning_logs:getTopics')
+    # Display a blank or invalid form.
+    context = {'form': form}
+    return render(request, 'learning_logs/newTopic.html', context)
+
+
+def newEntry(request, topic_id):
+    """Agregar una nueva entrada."""
+    topic = Topic.objects.get(id=topic_id)
+
+    if request.method != 'POST':
+        # Crea un formulario en blanco
+        form = EntryForm()
+    else:
+        # Se hace submit, se procesa los datos
+        form = EntryForm(data=request.POST)
+        if form.is_valid():
+            newEntry = form.save(commit=False)
+            newEntry.topic = topic
+            newEntry.save()
+            return redirect('learning_logs:getTopic', topic_id=topic_id)
+
+    # Se despliega un formulario en blanco
+    context = {'topic': topic, 'form': form}
+    return render(request, 'learning_logs/newEntry.html', context)
+
+
+def editEntry(request, entry_id):
+    """Modificar una entrada."""
+
+    entry = Entry.objects.get(id=entry_id)
+    topic = entry.topic
+
+    if request.method != 'POST':
+        # Se cargan el formulario con los datos de la entrada
+        form = EntryForm(instance=entry)
+    else:
+        # Se hace submit, se procesa los datos
+        form = EntryForm(instance=entry, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('learning_logs:getTopic', topic_id=topic.id)
+
+    context = {'entry': entry, 'topic': topic, 'form': form}
+    return render(request, 'learning_logs/editEntry.html', context)
+
+
+def handler404(request, *args, **argv):
+    """Método para manejar los errores 404"""
+    response = render('learning_logs/404.html', {})
+    response.status_code = 404
+    return response

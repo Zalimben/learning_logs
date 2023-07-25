@@ -1,12 +1,42 @@
-<h1>
-    Learning Log!
-</h1>
+<!DOCTYPE html>
+<html lang="en">
 
-<p>
-    <a href="{% url 'learning_logs:index' %}">Learning Log</a>
-    <a href="{% url 'learning_logs:getTopics' %}">Topics</a>
-</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Log</title>
+    <style>
+        /* Add your custom CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+        }
 
-{% block content %}
-    {# Todo lo encuentra aquí será reemplzado #}
-{% endblock content %}
+        /* Add more custom styles as needed */
+    </style>
+</head>
+
+<body>
+<header>
+    <h1>
+        <a href="{% url 'learning_logs:index' %}">Bienvenido a Learning Log</a>
+    </h1>
+    <p style="font-style: italic">Organiza y aprende</p>
+    <hr>
+    <p>
+        <a href="{% url 'learning_logs:getTopics' %}">Topics</a>
+    </p>
+</header>
+<main>
+    {% block content %}
+        {# Todo lo que encuentra aquí será reemplazado #}
+    {% endblock content %}
+</main>
+
+<footer>
+    <hr>
+    <p>
+        Diplomado en Backend - UCOM
+    </p>
+</footer>
+</body>
+</html>
