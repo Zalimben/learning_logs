@@ -3,12 +3,49 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/fontawesome.min.css" integrity="sha512-SgaqKKxJDQ/tAUAAXzvxZz33rmn7leYDYfBP+YoMRSENhf3zJyx3SBASt/OfeQwBHA1nxMis7mM3EV/oYT6Fdw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/solid.min.css" integrity="sha512-yDUXOUWwbHH4ggxueDnC5vJv4tmfySpVdIcN1LksGZi8W8EVZv4uKGrQc0pVf66zS7LDhFJM7Zdeow1sw1/8Jw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Learning Log</title>
     <style>
         /* Add your custom CSS styles here */
         body {
             font-family: Arial, sans-serif;
+        }
+
+        header ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        header li {
+            float: left;
+        }
+
+        header li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        /* Change the link color to #111 (black) on hover */
+        header li a:hover {
+            background-color: #111;
+        }
+
+        .site-footer .icon {
+	        font-size: 20px;
+        }
+
+        .site-footer .love .icon {
+            font-size: 12px;
+            margin-left: 2px;
+            margin-right: 2px;
         }
 
         /* Add more custom styles as needed */
@@ -22,9 +59,26 @@
     </h1>
     <p style="font-style: italic">Organiza y aprende</p>
     <hr>
-    <p>
-        <a href="{% url 'learning_logs:getTopics' %}">Topics</a>
-    </p>
+    <ul>
+        {% if user.is_authenticated %}
+            <li>
+                <a href="{% url 'learning_logs:index' %}">Hello, {{ user.username }}.</a>
+            </li>
+            <li>
+                <a href="{% url 'users:logout' %}">Log out</a>
+            </li>
+        {% else %}
+            <li>
+                <a href="{% url 'users:register' %}">Register</a>
+            </li>
+            <li>
+                <a href="{% url 'users:login' %}">Log in</a>
+            </li>
+        {% endif %}
+        <li>
+            <a href="{% url 'learning_logs:getTopics' %}">Topics</a>
+        </li>
+    </ul>
 </header>
 <main>
     {% block content %}
@@ -34,9 +88,7 @@
 
 <footer>
     <hr>
-    <p>
-        Diplomado en Backend - UCOM
-    </p>
+    <p class="love">Hecho con <i class="fa-solid fa-heart"></i> en el Diplomado en Backend - UCOM</p>
 </footer>
 </body>
 </html>
