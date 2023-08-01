@@ -102,6 +102,18 @@ def editEntry(request, entry_id):
     return render(request, 'learning_logs/editEntry.html', context)
 
 
+@login_required
+def removeEntry(request, entry_id):
+    """Remover una entrada."""
+
+    entry = Entry.objects.get(id=entry_id)
+    topic = entry.topic
+    if topic.owner != request.user:
+        raise Http404
+
+    entry.delete()
+    return redirect('learning_logs:getTopic', topic_id=topic.id)
+
 def handler404(request, *args, **argv):
     """Método para manejar los errores 404"""
     response = render('learning_logs/404.html', {})

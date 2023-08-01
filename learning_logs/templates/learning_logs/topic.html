@@ -1,26 +1,31 @@
 {% extends 'learning_logs/base.html' %}
 
+{% block page_header %}
+    <h3> Topic: {{ topic }}</h3>
+{% endblock page_header %}
+
 {% block content %}
-    <h2>Topic: {{ topic }}</h2>
     <h3>Entradas</h3>
     <p>
         <a href="{% url 'learning_logs:newEntry' topic.id %}">Agregar entrada</a>
     </p>
     <hr>
-    <ul>
     {% for entry in entries %}
-        <li>
-            <p>{{ entry.date_added|date:'M d, Y H:i' }}</p>
-            <p>{{ entry.text|linebreaks }}</p>
-            <p>
-                 <a href="{% url 'learning_logs:editEntry' entry.id %}">Editar</a>
-            </p>
-        {% if forloop.last != 1 %}
-            <hr>
-        {% endif %}
-        </li>
+        <div class="card mb-3">
+            <h4 class="card-header">
+                {{ entry.date_added|date:'M d, Y H:i' }} |
+                <small>
+                    <a href="{% url 'learning_logs:editEntry' entry.id %}">
+                        Editar</a> |
+                    <a href="{% url 'learning_logs:removeEntry' entry.id %}">
+                        Eliminar</a>
+                </small>
+            </h4>
+            <div class="card-body">
+                {{ entry.text|linebreaks }}
+            </div>
+        </div>
     {% empty %}
-    <li>No existen entradas.</li>
+        <li>No existen entradas.</li>
     {% endfor %}
-    </ul>
 {% endblock content %}
