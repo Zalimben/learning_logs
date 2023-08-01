@@ -47,17 +47,20 @@
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
                         <li class="nav-item navbar-text">
-                            Hello, {{ user.username }}
+                            Hola, {{ user.username }}! |
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'users:logout' %}">Log out</a>
+                            <a class="nav-link" href="{% url 'users:logout' %}">Logout</a>
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'users:register' %}">Register</a>
+                            <a class="nav-link" href="{% url 'users:register' %}">Registrar</a>
+                        </li>
+                        <li class="nav-item navbar-text">
+                            |
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'users:login' %}">Log in</a></li>
+                            <a class="nav-link" href="{% url 'users:login' %}">Login</a></li>
                     {% endif %}
                 </ul>
             </div>
@@ -80,7 +83,7 @@
 
 <footer class="footer mt-auto py-3 bg-light">
     <div class="container">
-        <span class="text-muted ">Hecho con <i class="fa-solid fa-heart"></i> en el Diplomado en Backend - UCOM</span>
+        <span class="text-muted ">Hecho con <i class="fa-solid fa-heart"></i> en el Diplomado de Desarrollo Backend - UCOM</span>
     </div>
 </footer>
 </body>
