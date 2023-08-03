@@ -114,6 +114,7 @@ def removeEntry(request, entry_id):
     entry.delete()
     return redirect('learning_logs:getTopic', topic_id=topic.id)
 
+
 def handler404(request, *args, **argv):
     """Método para manejar los errores 404"""
     response = render('learning_logs/404.html', {})
